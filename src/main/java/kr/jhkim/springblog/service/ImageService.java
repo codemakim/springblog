@@ -25,7 +25,7 @@ public class ImageService {
 
   private static final Logger logger = LoggerFactory.getLogger(ImageService.class);
 
-  private final Path rootLocation = Paths.get("c:/blog.uploads/");
+  private final Path rootLocation = Paths.get("/home/ubuntu/app/springblog/uploads/");
 
   @Autowired
   FileRepository fileRepository;
