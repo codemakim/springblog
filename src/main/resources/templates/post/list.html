@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="index" lang="en">
+
+<th:block layout:fragment="content">
+  <div class="container">
+    <!-- 작성된 글이 없는 경우 -->
+    <div th:if="${#lists.isEmpty(postList)}" class="text-center">
+      <h3 class="text-muted py-5 px-3">
+        작성된 글이 없습니다.
+      </h3>
+    </div>
+    
+    <!-- 글 목록 -->
+    <div class="row py-5 px-3" th:each="post : ${postList}">
+      <!--
+      <div class="col-3 bg-dark">thumnail-zone</div>
+       -->
+      <div class="col-9">
+        <a th:href="@{'/post/' + ${post.id}}" style="color:black;">
+          <strong th:text="${post.title}" class="ml-2">제목 들어가는 곳</strong>
+        </a>
+        <br>
+        <span th:text="${#dates.format(post.createDate, 'yyyy-MM-dd')}" class="ml-2">2019.12.03</span>
+      </div>
+    </div>
+
+    <!-- 페이지네이션 -->
+    <ul class="pagination justify-content-center" th:with="start=${T(Math).floor(postList.number/10)*10 + 1}, last=(${start + 9 lt postList.totalPages ? start + 9 : postList.totalPages})">
+      <li class="page-item">
+        <a th:href="@{/(tag=${selectTag}, page=1)}" class="page-link">First</a>
+      </li>
+      <li th:class="${postList.first} ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" th:href="${postList.first} ? '#' :@{/(tag=${selectTag}, page=${postList.number})}">&laquo;</a>
+      </li>
+      <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == postList.number + 1} ? 'page-item active' : 'page-item'">
+        <a class="page-link" th:href="@{/(tag=${selectTag}, page=${page})}" th:text="${page}"></a>
+      </li>
+      <li th:class="${postList.last} ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" th:href="${postList.last} ? '#' :@{/(tag=${selectTag}, page=${postList.number + 2})}" >&raquo;</a>
+      </li>
+      <li class="page-item">
+        <a th:href="@{/(tag=${selectTag}, page=${postList.totalPages})}" class="page-link">Last</a>
+      </li>
+    </ul>
+
+  </div>
+</th:block>
+</html>

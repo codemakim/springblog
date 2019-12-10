@@ -1,0 +1,11 @@
+<th:block th:fragment="footer">
+  <hr>
+  <div class="jumbotron bg-white container">
+    <a class="btn" sec:authorize="isAuthenticated()" th:href="@{/post/write}">글쓰기</a>
+    <a class="btn" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
+    <a class="btn" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
+    <a class="btn" sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/member/myinfo}">내정보</a>
+    <!-- <a class="btn" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/member/admin}">관리자</a> -->
+  </div>
+
+</th:block>

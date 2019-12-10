@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="index" lang="en">
+<th:block layout:fragment="content">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8">
+        <form th:action="@{/member/login}" method="post">
+          <div class="form-group">
+            <input type="email" name="username" class="form-control" placeholder="이메일을 입력하세요">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요">
+          </div>
+          <div th:if="${param.error}" class="text-center">
+            <!-- <p>Invalid username or password.</p> -->
+            <p>이메일이나 비밀번호가 일치하지 않습니다.</p>
+          </div>
+          <div th:if="${param.logout}">
+            You have been logged out.
+          </div>
+          <button type="submit" class="btn btn-block btn-primary">로그인</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</th:block>
+
+</html>

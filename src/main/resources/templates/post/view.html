@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="index" lang="en">
+
+<th:block layout:fragment="content">
+  <div class="container">
+    <!-- CONTENT -->
+    <h2 th:text="${post.title}" class="text-center"></h2>
+    <p th:text="${#dates.format(post.createDate, 'yyyy-MM-dd')}" class="text-right"></p>
+    <p th:utext="${post.content}"></p>
+
+    <!-- update / delete -->
+    <div class="text-right mt-4 mb-4">
+      <a href="/"><button class="btn btn-secondary">목록으로</button></a>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="mb-4" th:if="${#authentication.getPrincipal().getMember().getId() == post.memberId}">
+        <a class="btn btn-light" th:href="@{'/post/update/' + ${post.id}}">수정</a>
+        <button class="btn btn-light" data-toggle="modal" data-target="#myModal">삭제</button>
+    </div>
+    
+    <div id="disqus_thread"></div>
+  </div>
+  <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function () { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://springblog-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Post Delete</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          이 글을 정말 삭제하시겠습니까?
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-post-delete" th:attr="data-index=${post.id}" data-dismiss="modal">Yes</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+</th:block>
+
+</html>

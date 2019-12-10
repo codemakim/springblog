@@ -1,0 +1,13 @@
+<th:block th:fragment="hot-tag-list">
+  <hr>
+  <div class="container">
+    <th:block th:each="tag : ${hotTagList}">
+      <th:block th:if="${#lists.isEmpty(postList)}">
+        <a th:href="@{/(tag=${tag.name})}" th:text="${tag.name} + ' (' + ${tag.useCount} + ')'" th:class="${post.tag.contains(tag.name)} ? 'badge badge-pill badge-dark' : 'badge badge-pill badge-light'"></a>
+      </th:block>
+      <th:block th:if="${not #lists.isEmpty(postList)}">
+        <a th:href="@{/(tag=${tag.name}, page=${postList.number + 1})}" th:text="${tag.name} + ' (' + ${tag.useCount} + ')'" th:class="${selectTag.equals(tag.name)} ? 'badge badge-pill badge-dark' : 'badge badge-pill badge-light'"></a>
+      </th:block>
+    </th:block>
+  </div>
+</th:block>

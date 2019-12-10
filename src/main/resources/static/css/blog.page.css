@@ -1,0 +1,13 @@
+.page-link {
+  border: none;
+  color: black;
+  font-family: auto;
+}
+
+.page-item.active .page-link {
+  background-color: black;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}

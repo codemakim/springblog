@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="index" lang="en">
+<th:block layout:fragment="content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-6 col-lg-7 col-md-8">
+        <form th:action="@{/category/insert}" method="POST">
+          <div class="input-group mb-3">
+            <input type="hidden" name="postCount" value="0">
+            <input type="hidden" name="memberId" th:value="${#authentication.getPrincipal().getMember().getId()}">
+            <input type="text" name="name" class="form-control" placeholder="카테고리 명">
+            <div class="input-group-append">
+              <button class="btn btn-primary">추가</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div th:if="${#lists.isEmpty(categoryList)}" class="text-center">
+        <h3 class="text-muted py-5 px-3">
+            카테고리가 없습니다.
+        </h3>
+      </div>
+      <div class="col-xl-6 col-lg-7 col-md-8">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>카테고리 명</th>
+              <th>포스트 수</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="category : ${categoryList}">
+              <td th:text="${category.name}"></td>
+              <td th:text="${category.postCount}"></td>
+              <td>
+                <button class="btn btn-sm btn-light">삭제</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+</html>
