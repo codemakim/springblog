@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/member/myinfo", "/member/logout", "/post/write", "/post/update/**", "/post/delete/**",
             "/category", "/category/**", "/image")
-        .hasRole("MEMBER").antMatchers("/", "/**").permitAll().and()
+        .hasAnyRole("MEMBER", "ADMIN").antMatchers("/", "/**").permitAll().and()
         // 로그인 설정
         .formLogin().loginPage("/member/login").defaultSuccessUrl("/").permitAll().and()
         // 로그아웃 설정

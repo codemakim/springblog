@@ -9,7 +9,7 @@
         <input type="hidden" name="memberEmail" th:value="${#authentication.getPrincipal().getMember().getEmail()}">
         <div class="form-group">
           <label for="title">제목</label>
-          <input type="text" name="title" class="form-control" autocomplete="off" id="title">
+          <input type="text" name="title" maxlength="60" class="form-control" autocomplete="off" id="title">
         </div>
         <div class="form-group">
           <textarea name="content" cols="30" rows="15" id="summernote"></textarea>
