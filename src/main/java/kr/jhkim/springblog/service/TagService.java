@@ -86,6 +86,9 @@ public class TagService {
   public void savePostTag(Post post) {
     String[] stringList = post.getTag().split(",");
     for (int i = 0; i < stringList.length; i++) {
+      if (stringList[i].isEmpty()) {
+        continue;
+      }
       Tag tag = tagRepository.findByName(stringList[i]);
       if (tag != null) {
         tag.setUseCount(postRepository.countByTagContaining(stringList[i]));
