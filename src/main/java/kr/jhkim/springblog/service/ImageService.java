@@ -25,7 +25,11 @@ public class ImageService {
 
   private static final Logger logger = LoggerFactory.getLogger(ImageService.class);
 
-  private final Path rootLocation = Paths.get("/home/ubuntu/app/springblog/uploads/");
+  // 배포
+  // private final Path rootLocation =
+  // Paths.get("/home/ubuntu/app/springblog/uploads/");
+  // 개발
+  private final Path rootLocation = Paths.get("c:/springblog.uploads");
 
   @Autowired
   FileRepository fileRepository;
@@ -39,6 +43,17 @@ public class ImageService {
     return fileRepository.findOneById(fileId);
   }
 
+  public void deleteFIleFromTable(Long id) {
+    fileRepository.deleteById(id);
+  }
+
+  /**
+   * 파일명을 이용해 파일 정보를 찾아내 반환합니다.
+   * 
+   * @param fileName
+   * @return
+   * @throws Exception
+   */
   public Resource loadAsResource(String fileName) throws Exception {
     try {
       if (fileName.toCharArray()[0] == '/') {
@@ -57,6 +72,29 @@ public class ImageService {
     }
   }
 
+  /**
+   * 파일 이름을 전달받아 해당 파일을 삭제하하는 메소드입니다.
+   * 
+   * @param fileName
+   * @return
+   * @throws Exception
+   */
+  public boolean deleteResource(String filePath) throws Exception {
+    try {
+      File file = new File(filePath);
+      return file.delete();
+
+    } catch (Exception e) {
+      throw new Exception("Could not delete file: id " + filePath);
+    }
+  }
+
+  /**
+   * 파일 이름을 전달받아 해당 파일의 저장 위치를 반환합니다.
+   * 
+   * @param fileName
+   * @return
+   */
   private Path loadPath(String fileName) {
     return rootLocation.resolve(fileName);
   }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.jhkim.springblog.domain.UploadFile;
@@ -81,6 +82,27 @@ public class ImageController {
       Resource resource = imageService.loadAsResource(uploadedFile.getSaveFileName());
       return ResponseEntity.ok().headers(headers).body(resource);
 
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  /**
+   * 
+   * @return
+   */
+  @ResponseBody
+  @GetMapping(value = "delete/{id}")
+  public ResponseEntity<?> deleteImage(@PathVariable(value = "id") Long id) {
+    UploadFile targetFile = imageService.load(id);
+    try {
+      if (imageService.deleteResource(targetFile.getFilePath())) {
+        imageService.deleteFIleFromTable(id);
+        return ResponseEntity.ok().body(targetFile);
+      } else {
+        return ResponseEntity.badRequest().build();
+      }
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.badRequest().build();

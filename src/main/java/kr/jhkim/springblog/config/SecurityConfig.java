@@ -39,10 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.authorizeRequests()
         // 페이지 권한 설정
-        .antMatchers("/admin/**").hasRole("ADMIN")
-        .antMatchers("/member/myinfo", "/member/logout", "/post/write", "/post/update/**", "/post/delete/**",
-            "/category", "/category/**", "/image")
-        .hasAnyRole("MEMBER", "ADMIN").antMatchers("/", "/**").permitAll().and()
+        .antMatchers("/admin/**", "/post/write", "/post/update/**", "/post/delete/**", "/category", "/category/**",
+            "/image/delete/**")
+        .hasRole("ADMIN").antMatchers("/member/myinfo", "/member/logout", "/image").hasAnyRole("MEMBER", "ADMIN")
+        .antMatchers("/", "/**").permitAll().and()
         // 로그인 설정
         .formLogin().loginPage("/member/login").defaultSuccessUrl("/").permitAll().and()
         // 로그아웃 설정
