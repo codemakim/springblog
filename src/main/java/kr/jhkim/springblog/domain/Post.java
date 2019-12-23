@@ -1,12 +1,17 @@
 package kr.jhkim.springblog.domain;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -31,6 +36,9 @@ public class Post {
   @Column(name = "s_title", nullable = false)
   private String title;
 
+  @Column(name = "s_preview", length = 200)
+  private String preview;
+
   @Column(name = "s_content", nullable = false, columnDefinition = "TEXT")
   private String content;
 
@@ -49,21 +57,30 @@ public class Post {
   @Column(name = "s_tag")
   private String tag;
 
-  public Post setNowDate() {
-    this.createDate = new Date();
-    return this;
-  }
+  @Column(name = "s_visible")
+  private String visible;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "post_id")
+  private List<Comment> comments;
 
   @Builder
-  public Post(Long id, String title, String content, Long memberId, String memberEmail, Date createDate,
-      Date updateDate, String tag) {
+  public Post(Long id, String title, String preview, String content, Long memberId, String memberEmail, Date createDate,
+      Date updateDate, String tag, String visible) {
     this.id = id;
     this.title = title;
+    this.preview = preview;
     this.content = content;
     this.memberId = memberId;
     this.memberEmail = memberEmail;
     this.createDate = createDate;
     this.updateDate = updateDate;
     this.tag = tag;
+    this.visible = visible;
+  }
+
+  public Post setNowDate() {
+    this.createDate = new Date();
+    return this;
   }
 }

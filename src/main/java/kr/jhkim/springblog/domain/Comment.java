@@ -26,27 +26,38 @@ public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Column(name = "s_name", nullable = false)
   private String name;
+
   @Column(name = "s_password", nullable = false)
   private String password;
+
   @Column(name = "s_content", nullable = false)
   private String content;
+
   @Column(name = "b_display", nullable = false)
   private boolean display;
+
   @Column(name = "b_ip", nullable = false)
   private String ip;
+
+  @Column(name = "n_depth", nullable = false)
+  private int depth;
+
   @Column(name = "d_createdate", nullable = false)
   private Date createDate;
 
   @Builder
-  public Comment(Long id, String name, String password, String content, boolean display, String ip, Date createDate) {
+  public Comment(Long id, String name, String password, String content, boolean display, String ip, int depth,
+      Date createDate) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.content = content;
     this.display = display;
     this.ip = ip;
+    this.depth = depth;
     this.createDate = createDate;
   }
 }
