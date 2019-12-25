@@ -1,0 +1,21 @@
+<th:block th:fragment="pagination">
+  <ul class="pagination justify-content-center"
+    th:with="start=${T(Math).floor(postList.number/10)*10 + 1}, last=(${start + 9 lt postList.totalPages ? start + 9 : postList.totalPages})">
+    <li class="page-item">
+      <a th:href="@{/(tag=${selectTag}, page=1)}" class="page-link">First</a>
+    </li>
+    <li th:class="${postList.first} ? 'page-item disabled' : 'page-item'">
+      <a class="page-link"
+        th:href="${postList.first} ? '#' :@{/(tag=${selectTag}, page=${postList.number})}">&laquo;</a>
+    </li>
+    <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == postList.number + 1} ? 'page-item active' : 'page-item'">
+      <a class="page-link" th:href="@{/(tag=${selectTag}, page=${page})}" th:text="${page}"></a>
+    </li>
+    <li th:class="${postList.last} ? 'page-item disabled' : 'page-item'">
+      <a class="page-link" th:href="${postList.last} ? '#' :@{/(tag=${selectTag}, page=${postList.number + 2})}" >&raquo;</a>
+    </li>
+    <li class="page-item">
+      <a th:href="@{/(tag=${selectTag}, page=${postList.totalPages})}" class="page-link">Last</a>
+    </li>
+  </ul>
+</th:block>

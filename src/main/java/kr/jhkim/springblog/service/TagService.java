@@ -2,6 +2,8 @@ package kr.jhkim.springblog.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import kr.jhkim.springblog.domain.Post;
@@ -15,6 +17,8 @@ import lombok.AllArgsConstructor;
 public class TagService {
   private TagRepository tagRepository;
   private PostRepository postRepository;
+
+  protected final Logger logger = LoggerFactory.getLogger(TagService.class);
 
   /**
    * 전달받은 태그 정보를 테이블에 저장합니다.
@@ -42,6 +46,7 @@ public class TagService {
    * @return List<Tag>
    */
   public List<Tag> getTagListAll() {
+    logger.info("tagService.getTagListAll :: 모든 태그 몰고 반환 메소드 진입");
     return tagRepository.findAll();
   }
 

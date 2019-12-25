@@ -1,5 +1,7 @@
 package kr.jhkim.springblog.controller;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.jhkim.springblog.domain.AuthUser;
 import kr.jhkim.springblog.domain.Post;
+import kr.jhkim.springblog.domain.Tag;
 import kr.jhkim.springblog.service.PostService;
 import kr.jhkim.springblog.service.TagService;
 import lombok.AllArgsConstructor;
@@ -32,6 +35,11 @@ public class PostController {
 
   protected final Logger logger = LoggerFactory.getLogger(PostController.class);
 
+  @ModelAttribute("tagList")
+  public List<Tag> getTagList() {
+    return tagService.getTagListAll();
+  }
+
   /**
    * 모든 포스트 목록을 반환합니다.
    * 
@@ -41,7 +49,6 @@ public class PostController {
   @GetMapping
   public String list(@PageableDefault Pageable pageable, Model model) {
     model.addAttribute("postList", postService.getPostPage(pageable));
-    model.addAttribute("tagList", tagService.getTagListAll());
     return "post/list";
   }
 
@@ -66,6 +73,7 @@ public class PostController {
   @PostMapping(value = "/write")
   public String postWrite(@ModelAttribute Post post) {
     logger.info("written post: " + post.toString());
+    post.setCommentCount(0);
     postService.savePost(post.setNowDate());
     tagService.savePostTag(post);
     return "redirect:/";
@@ -84,7 +92,6 @@ public class PostController {
     if (post == null)
       return "error_404";
     model.addAttribute(post);
-    model.addAttribute("hotTagList", tagService.getHotTagList());
     return "post/view";
   }
 
@@ -98,7 +105,6 @@ public class PostController {
   public String getUpdatePage(@PathVariable Long id, Model model) {
     Post post = postService.getPost(id);
     model.addAttribute(post);
-    model.addAttribute("hotTagList", tagService.getHotTagList());
     return "post/update";
   }
 

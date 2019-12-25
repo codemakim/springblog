@@ -1,6 +1,6 @@
 <th:block th:fragment="hot-tag-list">
   <div class="container">
-    <th:block th:each="tag : ${hotTagList}">
+    <th:block th:each="tag : ${tagList}">
       <th:block th:if="${#lists.isEmpty(postList)}">
         <a th:href="@{/(tag=${tag.name})}" th:text="${tag.name} + ' (' + ${tag.useCount} + ')'" class="badge badge-pill badge-light"></a>
       </th:block>

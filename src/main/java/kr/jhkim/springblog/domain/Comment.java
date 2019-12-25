@@ -48,6 +48,9 @@ public class Comment {
   @Column(name = "d_createdate", nullable = false)
   private Date createDate;
 
+  @Column(name = "post_id", nullable = false)
+  private Long postId;
+
   @Builder
   public Comment(Long id, String name, String password, String content, boolean display, String ip, int depth,
       Date createDate) {

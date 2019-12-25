@@ -4,23 +4,49 @@
 
 <th:block layout:fragment="content">
   <div class="container">
-    <!-- CONTENT -->
-    <h2 th:text="${post.title}" class="text-center"></h2>
-    <p th:text="${#dates.format(post.createDate, 'yyyy-MM-dd')}" class="text-right"></p>
-    <p th:utext="${post.content}"></p>
+    <div class="row">
+      <!-- 카테고리 -->
+      <div th:replace="layout/tag_list :: tagList"></div>
 
-    <!-- update / delete -->
-    <div class="text-right mt-4 mb-4">
-      <a href="/"><button class="btn btn-secondary">목록으로</button></a>
+      <div class="col-md-9">
+        <!-- CONTENT -->
+        <h2 th:text="${post.title}" class="text-center"></h2>
+        <p th:text="${#dates.format(post.createDate, 'yyyy-MM-dd')}" class="text-right"></p>
+        <p th:utext="${post.content}"></p>
+
+        <!-- update / delete -->
+        <div class="text-right mt-4 mb-4">
+          <a href="/"><button class="btn btn-secondary">목록으로</button></a>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="mb-4" th:if="${#authentication.getPrincipal().getMember().getId() == post.memberId}">
+            <a class="btn btn-light" th:href="@{'/post/update/' + ${post.id}}">수정</a>
+            <button class="btn btn-light" data-toggle="modal" data-target="#myModal">삭제</button>
+        </div>
+
+        <!-- 댓글 입력창 -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <form action="/comment/write">
+              <input type="hidden" name="">
+              <div class="row mb-2">
+                <div class="col-md-6 mb-1">
+                  <input type="text" name="name" class="form-control" placeholder="이름">
+                </div>
+                <div class="col-md-6 mb-1">
+                  <input type="text" name="password" class="form-control" placeholder="패스워드">
+                </div>
+              </div>
+              <textarea name="content" class="form-control mb-1" cols="30" rows="4"></textarea>
+              <button class="btn btn-dark">등록</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- <div id="disqus_thread"></div> -->
     </div>
-    <div sec:authorize="isAuthenticated()" class="mb-4" th:if="${#authentication.getPrincipal().getMember().getId() == post.memberId}">
-        <a class="btn btn-light" th:href="@{'/post/update/' + ${post.id}}">수정</a>
-        <button class="btn btn-light" data-toggle="modal" data-target="#myModal">삭제</button>
-    </div>
-    
-    <div id="disqus_thread"></div>
   </div>
-  <script>
+  <!-- <script>
 
     /**
     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
@@ -38,7 +64,7 @@
       (d.head || d.body).appendChild(s);
     })();
   </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript> -->
 
   <!-- The Modal -->
   <div class="modal fade" id="myModal">

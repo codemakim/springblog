@@ -10,7 +10,8 @@
       <input type="hidden" name="memberEmail" th:value="${post.memberEmail}">
       <div class="form-group">
         <label for="title">제목</label>
-        <input type="text" name="title" class="form-control" th:value="${post.title}" autocomplete="off" id="title">
+        <input type="text" name="title" maxlength="60" class="form-control" th:value="${post.title}" autocomplete="off"
+          id="title">
       </div>
       <div class="form-group">
         <textarea name="content" cols="30" rows="15" id="summernote" th:text="${post.content}"></textarea>

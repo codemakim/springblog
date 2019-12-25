@@ -5,34 +5,20 @@
 <th:block layout:fragment="content">
   <div class="container">
     <div class="row">
-      <div class="col-sm-3">
-        <div class="card mb-3">
-          <form action="">
-            <input type="text" name="search" id="" class="form-control">
-            <button>검색</button>
-          </form>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            카테고리
-          </div>
-          <div class="card-body">
-            카드바디
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-9">
+      <!-- 카테고리 -->
+      <div th:replace="layout/tag_list :: tagList"></div>
+
+      <!-- 글 목록 시작 -->
+      <div class="col-md-9">
         <!-- 작성된 글이 없는 경우 -->
         <div th:if="${#lists.isEmpty(postList)}" class="text-center">
           <h3 class="text-muted py-5 px-3">
             작성된 글이 없습니다.
           </h3>
         </div>
-        <!-- 글 목록 -->
+        <!-- 글이 있는 경우 -->
         <div class="row py-5 px-3" th:each="post : ${postList}">
-          <!--
-          <div class="col-3 bg-dark">thumnail-zone</div>
-            -->
+          <!-- <div class="col-3 bg-dark">thumnail-zone</div> -->
           <div>
             <a th:href="@{'/post/' + ${post.id}}" style="color:black;">
               <strong th:text="${post.title}" class="ml-2">제목 들어가는 곳</strong>
@@ -42,25 +28,11 @@
           </div>
         </div>
       </div>
+      <!-- 글 목록 끝 -->
+
     </div>
     <!-- 페이지네이션 -->
-    <ul class="pagination justify-content-center" th:with="start=${T(Math).floor(postList.number/10)*10 + 1}, last=(${start + 9 lt postList.totalPages ? start + 9 : postList.totalPages})">
-      <li class="page-item">
-        <a th:href="@{/(tag=${selectTag}, page=1)}" class="page-link">First</a>
-      </li>
-      <li th:class="${postList.first} ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" th:href="${postList.first} ? '#' :@{/(tag=${selectTag}, page=${postList.number})}">&laquo;</a>
-      </li>
-      <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == postList.number + 1} ? 'page-item active' : 'page-item'">
-        <a class="page-link" th:href="@{/(tag=${selectTag}, page=${page})}" th:text="${page}"></a>
-      </li>
-      <li th:class="${postList.last} ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" th:href="${postList.last} ? '#' :@{/(tag=${selectTag}, page=${postList.number + 2})}" >&raquo;</a>
-      </li>
-      <li class="page-item">
-        <a th:href="@{/(tag=${selectTag}, page=${postList.totalPages})}" class="page-link">Last</a>
-      </li>
-    </ul>
+    <div th:replace="post/pagination :: pagination"></div>
 
   </div>
 </th:block>

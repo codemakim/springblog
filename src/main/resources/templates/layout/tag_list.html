@@ -1,0 +1,33 @@
+<th:block th:fragment="tagList">
+  <!-- 카테고리 / 검색 컴포넌트 시작 -->
+  <div class="col-sm-3">
+    <!--     
+    <div class="card mb-3">
+      <form action="">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search">
+          <div class="input-group-append">
+            <button class="btn btn-light" type="submit">Go</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    -->
+    <div class="card">
+      <div class="card-header text-center">
+        카테고리
+      </div>
+      <div class="card-body">
+        <th:block th:each="tag : ${tagList}">
+          <th:block th:if="${#lists.isEmpty(postList)}">
+            <a th:href="@{/(tag=${tag.name})}" th:text="${tag.name} + ' (' + ${tag.useCount} + ')'" class="badge badge-pill badge-light"></a>
+          </th:block>
+          <th:block th:if="${not #lists.isEmpty(postList)}">
+            <a th:href="@{/(tag=${tag.name}, page=${postList.number + 1})}" th:text="${tag.name} + ' (' + ${tag.useCount} + ')'" th:class="${selectTag.equals(tag.name)} ? 'badge badge-pill badge-dark' : 'badge badge-pill badge-light'"></a>
+          </th:block>
+        </th:block>
+      </div>
+    </div>
+  </div>
+  <!-- 카테고리 / 검색 컴포넌트 끝 -->
+</th:block>

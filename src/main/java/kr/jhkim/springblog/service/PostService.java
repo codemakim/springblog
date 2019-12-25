@@ -84,6 +84,7 @@ public class PostService {
     Post currentPost = getPost(post.getId());
     currentPost.setTitle(post.getTitle());
     currentPost.setContent(post.getContent());
+    currentPost.setTag(post.getTag());
     currentPost.setUpdateDate(new Date());
     return postRepository.save(currentPost).getId();
   }

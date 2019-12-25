@@ -60,13 +60,16 @@ public class Post {
   @Column(name = "s_visible")
   private String visible;
 
+  @Column(name = "n_commentcount")
+  private int commentCount;
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "post_id")
   private List<Comment> comments;
 
   @Builder
   public Post(Long id, String title, String preview, String content, Long memberId, String memberEmail, Date createDate,
-      Date updateDate, String tag, String visible) {
+      Date updateDate, String tag, int commentCount, String visible) {
     this.id = id;
     this.title = title;
     this.preview = preview;
@@ -76,6 +79,7 @@ public class Post {
     this.createDate = createDate;
     this.updateDate = updateDate;
     this.tag = tag;
+    this.commentCount = commentCount;
     this.visible = visible;
   }
 
