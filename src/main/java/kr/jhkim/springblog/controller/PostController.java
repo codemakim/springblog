@@ -2,6 +2,7 @@ package kr.jhkim.springblog.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -19,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.jhkim.springblog.domain.AuthUser;
+import kr.jhkim.springblog.domain.Comment;
 import kr.jhkim.springblog.domain.Post;
 import kr.jhkim.springblog.domain.Tag;
+import kr.jhkim.springblog.service.CommentService;
 import kr.jhkim.springblog.service.PostService;
 import kr.jhkim.springblog.service.TagService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Transactional
@@ -32,6 +36,7 @@ import lombok.AllArgsConstructor;
 public class PostController {
   private PostService postService;
   private TagService tagService;
+  private CommentService commentService;
 
   protected final Logger logger = LoggerFactory.getLogger(PostController.class);
 
@@ -65,7 +70,7 @@ public class PostController {
   }
 
   /**
-   * 포스트 정보를 전달받아 테이블에 저장하고, 메인 화면으로 페이지를 리다이렉트하는 컨트롤러입니다.
+   * 포스트 정보를 전달받아 데이터베이스에 저장하고, 메인 화면으로 페이지를 리다이렉트하는 컨트롤러입니다.
    * 
    * @param post
    * @return
@@ -73,8 +78,7 @@ public class PostController {
   @PostMapping(value = "/write")
   public String postWrite(@ModelAttribute Post post) {
     logger.info("written post: " + post.toString());
-    post.setCommentCount(0);
-    postService.savePost(post.setNowDate());
+    postService.savePost(post);
     tagService.savePostTag(post);
     return "redirect:/";
   }
@@ -136,6 +140,38 @@ public class PostController {
       result = postService.deletePost(id);
     }
     return result;
+  }
+
+  /**
+   * 코멘트 정보를 전달받아 데이터베이스에 저장합니다. 성공적으로 저장하면, 코멘트 목록을 반환합니다.
+   * 
+   * @param postId
+   * @param comment
+   * @param request
+   * @return
+   */
+  @PostMapping(value = "{postId}/comment")
+  public String writeComment(@PathVariable(value = "postId") Long postId, Comment comment, Model model,
+      HttpServletRequest request) {
+    comment.setPostId(postId);
+    comment.setIp(request.getRemoteAddr());
+    commentService.saveComment(comment);
+    List<Comment> commentList = commentService.getCommentListByPost(postId);
+    model.addAttribute(commentList);
+    return "comment/comment_list";
+  }
+
+  /**
+   * 포스트 ID를 넘겨받아 해당 포스트의 코멘트 목록을 반환합니다.
+   * 
+   * @param postId
+   * @return
+   */
+  @GetMapping(value = "{postId}/comment")
+  public String getCommentList(@PathVariable(value = "postId") Long postId, Model model) {
+    List<Comment> commentList = commentService.getCommentListByPost(postId);
+    model.addAttribute(commentList);
+    return "comment/comment_list";
   }
 
 }

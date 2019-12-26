@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorator="index" lang="en">
+  layout:decorator="index" lang="ko">
 
 <th:block layout:fragment="content">
   <div class="container">
@@ -9,12 +9,12 @@
       <div th:replace="layout/tag_list :: tagList"></div>
 
       <div class="col-md-9">
-        <!-- CONTENT -->
+        <!-- 본문 -->
         <h2 th:text="${post.title}" class="text-center"></h2>
         <p th:text="${#dates.format(post.createDate, 'yyyy-MM-dd')}" class="text-right"></p>
         <p th:utext="${post.content}"></p>
 
-        <!-- update / delete -->
+        <!-- 업데이트 / 삭제 버튼 -->
         <div class="text-right mt-4 mb-4">
           <a href="/"><button class="btn btn-secondary">목록으로</button></a>
         </div>
@@ -23,10 +23,17 @@
             <button class="btn btn-light" data-toggle="modal" data-target="#myModal">삭제</button>
         </div>
 
+        <!-- 댓글 목록 -->
+        <div class="list-comment">
+          <div class="jumbotron">
+            <h5 class="text-center text-muted">댓글이 없습니다.</h5>
+          </div>
+        </div>
+
         <!-- 댓글 입력창 -->
         <div class="card mb-3">
           <div class="card-body">
-            <form action="/comment/write">
+            <form action="/comment/write" name="commentWriteForm">
               <input type="hidden" name="">
               <div class="row mb-2">
                 <div class="col-md-6 mb-1">
@@ -66,7 +73,7 @@
   </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript> -->
 
-  <!-- The Modal -->
+  <!-- 삭제 확인 모달 -->
   <div class="modal fade" id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">

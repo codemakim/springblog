@@ -1,12 +1,19 @@
 package kr.jhkim.springblog.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -19,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(exclude = "parent")
 @Table(name = "sb_comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
@@ -42,25 +49,38 @@ public class Comment {
   @Column(name = "b_ip", nullable = false)
   private String ip;
 
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "n_parentid", referencedColumnName = "id")
+  private Comment parent;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+  private List<Comment> children = new ArrayList<Comment>();
+
   @Column(name = "n_depth", nullable = false)
   private int depth;
+
+  @Column(name = "n_childcount")
+  private int childCount = 0;
 
   @Column(name = "d_createdate", nullable = false)
   private Date createDate;
 
-  @Column(name = "post_id", nullable = false)
+  @Column(name = "n_postid", nullable = false)
   private Long postId;
 
   @Builder
-  public Comment(Long id, String name, String password, String content, boolean display, String ip, int depth,
-      Date createDate) {
+  public Comment(Long id, String name, String password, String content, boolean display, String ip, Comment parent,
+      int depth, int childCount, Date createDate, Long postId) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.content = content;
     this.display = display;
     this.ip = ip;
+    this.parent = parent;
     this.depth = depth;
+    this.childCount = childCount;
     this.createDate = createDate;
+    this.postId = postId;
   }
 }

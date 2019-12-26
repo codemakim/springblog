@@ -3,21 +3,20 @@ package kr.jhkim.springblog.service;
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.jhkim.springblog.domain.Post;
 import kr.jhkim.springblog.repository.PostRepository;
 import lombok.AllArgsConstructor;
 
 @Service
-@Transactional
 @AllArgsConstructor
+@Transactional
 public class PostService {
   private PostRepository postRepository;
 
@@ -27,6 +26,8 @@ public class PostService {
    * @param post
    */
   public Long savePost(Post post) {
+    post.setCommentCount(0);
+    post.setNowDate();
     return postRepository.save(post).getId();
   }
 
@@ -35,6 +36,7 @@ public class PostService {
    * 
    * @return
    */
+  @Transactional(readOnly = true)
   public List<Post> getPostList() {
     return postRepository.findAll();
   }
@@ -44,6 +46,7 @@ public class PostService {
    * 
    * @return
    */
+  @Transactional(readOnly = true)
   public Page<Post> getPostPage(Pageable pageable) {
     int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
     pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
@@ -58,6 +61,7 @@ public class PostService {
    * @param tag
    * @return
    */
+  @Transactional(readOnly = true)
   public Page<Post> getPostListByTagDesc(String tag, Pageable pageable) {
     int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
     pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
@@ -70,6 +74,7 @@ public class PostService {
    * @param id
    * @return
    */
+  @Transactional(readOnly = true)
   public Post getPost(Long id) {
     return postRepository.findById(id).orElse(null);
   }

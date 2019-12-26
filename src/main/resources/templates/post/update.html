@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorator="index" lang="en">
+  layout:decorator="index" lang="ko">
 
 <th:block layout:fragment="content">
   <div class="container">
     <form th:action="@{'/post/update/'+ ${post.id}}" method="POST">
       <input type="hidden" name="id" th:value="${post.id}" />
-      <input type="hidden" name="memberId" th:value="${post.memberId}">
-      <input type="hidden" name="memberEmail" th:value="${post.memberEmail}">
+      <input type="hidden" name="memberId" th:value="${post.memberId}" />
+      <input type="hidden" name="memberEmail" th:value="${post.memberEmail}" />
+      <input type="hidden" name="commentCount" value="0" />
       <div class="form-group">
         <label for="title">제목</label>
         <input type="text" name="title" maxlength="60" class="form-control" th:value="${post.title}" autocomplete="off"
           id="title">
+      </div>
+      <div class="form-group">
+        <textarea name="preview" cols="30" rows="4"></textarea>
       </div>
       <div class="form-group">
         <textarea name="content" cols="30" rows="15" id="summernote" th:text="${post.content}"></textarea>
