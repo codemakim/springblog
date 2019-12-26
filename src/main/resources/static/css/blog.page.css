@@ -11,3 +11,38 @@
 .clickable:hover {
   cursor: pointer;
 }
+
+.text-comment-title {
+  font-weight: bold;
+  font-size: large;
+}
+
+.btn-circle.btn-sm {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  border: none;
+  font-size: 12px;
+  text-align: center;
+}
+
+.btn-circle.btn-md {
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  border: none;
+  font-size: 15px;
+  text-align: center;
+}
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+}
