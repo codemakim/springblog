@@ -61,6 +61,9 @@ public class ImageService {
       }
 
       Path file = loadPath(fileName);
+
+      logger.info("file load path : " + file.toUri());
+
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
