@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.jhkim.springblog.domain.AuthUser;
@@ -27,6 +29,7 @@ import kr.jhkim.springblog.service.CommentService;
 import kr.jhkim.springblog.service.PostService;
 import kr.jhkim.springblog.service.TagService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Transactional
@@ -174,6 +177,33 @@ public class PostController {
     List<Comment> commentList = commentService.getCommentListByPost(postId);
     model.addAttribute(commentList);
     return "comment/comment_list";
+  }
+
+  /**
+   * 코멘트 ID와 비밀번호를 입력받습니다. 입력받은 ID의 코멘트 정보와 비밀번호가 일치하면, 코멘트를 삭제합니다.
+   * 
+   * @param postId
+   * @param commentId
+   * @param pwd
+   * @return
+   */
+  @ResponseBody
+  @GetMapping(value = "{postId}/comment/{commentId}/delete")
+  public ResponseEntity<?> deleteComment(@PathVariable(value = "postId") Long postId,
+      @PathVariable(value = "commentId") Long commentId, @RequestParam(value = "pwd") String pwd) {
+
+    try {
+      Comment comment = commentService.getComment(commentId);
+      if (pwd == comment.getPassword()) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok().build();
+      } else {
+        return ResponseEntity.badRequest().build();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.badRequest().build();
+    }
   }
 
 }
