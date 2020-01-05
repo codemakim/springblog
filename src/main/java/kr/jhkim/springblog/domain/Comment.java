@@ -42,10 +42,10 @@ public class Comment {
   @Column(name = "s_content", nullable = false)
   private String content;
 
-  @Column(name = "b_display", nullable = false)
+  @Column(name = "b_display")
   private boolean display;
 
-  @Column(name = "b_ip", nullable = false)
+  @Column(name = "b_ip")
   private String ip;
 
   @ManyToOne(fetch = FetchType.EAGER)
@@ -55,10 +55,10 @@ public class Comment {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
   private List<Comment> children = new ArrayList<Comment>();
 
-  @Column(name = "n_depth", nullable = false)
+  @Column(name = "n_depth")
   private int depth;
 
-  @Column(name = "n_childcount")
+  @Column(name = "n_childcount", columnDefinition = "default 0")
   private int childCount = 0;
 
   @Column(name = "d_createdate", nullable = false)

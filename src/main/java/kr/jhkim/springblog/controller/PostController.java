@@ -94,7 +94,10 @@ public class PostController {
     Post post = postService.getPost(id);
     if (post == null)
       return "error_404";
+    List<Comment> commentList = commentService.getCommentListByPost(id);
+
     model.addAttribute(post);
+    model.addAttribute(commentList);
     return "post/view";
   }
 
@@ -157,7 +160,7 @@ public class PostController {
     commentService.saveComment(comment);
     List<Comment> commentList = commentService.getCommentListByPost(postId);
     model.addAttribute(commentList);
-    return "comment/comment_list";
+    return "redirect:/post/" + postId;
   }
 
   /**

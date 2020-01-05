@@ -1,5 +1,6 @@
 package kr.jhkim.springblog.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class CommentService {
     try {
       comment.setDisplay(true);
       comment.setChildCount(0);
+      comment.setCreateDate(new Date());
       Long commentId = commentRepository.save(comment).getId();
       Post post = postService.getPost(comment.getPostId());
       post.setCommentCount(post.getCommentCount() + 1);
@@ -48,7 +50,7 @@ public class CommentService {
   }
 
   /**
-   * 포스트 ID를 넘겨받아 해당 포스트의 댓글 목록을 반환합니다.
+   * 포스트 ID를 넘겨받아 depth 값이 1이며, display가 true 인 해당 포스트의 댓글 목록을 반환합니다.
    * 
    * @param postId
    * @return
