@@ -29,7 +29,6 @@ import kr.jhkim.springblog.service.CommentService;
 import kr.jhkim.springblog.service.PostService;
 import kr.jhkim.springblog.service.TagService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Transactional

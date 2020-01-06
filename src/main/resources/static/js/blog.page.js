@@ -16,6 +16,14 @@ var $Page = {
       console.log($(this).attr('data-index'));
       $Page.deletePost($(this).attr('data-index'));
     });
+
+    $(document).on('click', '.btn-modal-update-comment', function (e) {
+
+    });
+
+    $(document).on('click', '.btn-modal-delete-comment', function (e) {
+
+    });
   },
 
   /**

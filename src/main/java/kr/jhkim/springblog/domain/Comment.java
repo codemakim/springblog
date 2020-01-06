@@ -42,10 +42,10 @@ public class Comment {
   @Column(name = "s_content", nullable = false)
   private String content;
 
-  @Column(name = "b_display")
-  private boolean display;
+  @Column(name = "b_display", nullable = false)
+  private Boolean display;
 
-  @Column(name = "b_ip")
+  @Column(name = "b_ip", nullable = false)
   private String ip;
 
   @ManyToOne(fetch = FetchType.EAGER)
@@ -55,11 +55,11 @@ public class Comment {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
   private List<Comment> children = new ArrayList<Comment>();
 
-  @Column(name = "n_depth")
-  private int depth;
+  @Column(name = "n_depth", nullable = false)
+  private Integer depth;
 
-  @Column(name = "n_childcount", columnDefinition = "default 0")
-  private int childCount = 0;
+  @Column(name = "n_childcount", nullable = false, columnDefinition = "default 0")
+  private Integer childCount = 0;
 
   @Column(name = "d_createdate", nullable = false)
   private Date createDate;
@@ -68,8 +68,8 @@ public class Comment {
   private Long postId;
 
   @Builder
-  public Comment(Long id, String name, String password, String content, boolean display, String ip, Comment parent,
-      int depth, int childCount, Date createDate, Long postId) {
+  public Comment(Long id, String name, String password, String content, Boolean display, String ip, Comment parent,
+      Integer depth, Integer childCount, Date createDate, Long postId) {
     this.id = id;
     this.name = name;
     this.password = password;

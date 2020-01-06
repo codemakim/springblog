@@ -15,5 +15,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
    * @param depth
    * @return
    */
-  List<Comment> findByPostIdAndDepthAndDisplayTrueOrderByIdAsc(Long postId, int depth);
+  List<Comment> findByPostIdAndDepthOrderByIdAsc(Long postId, int depth);
 }

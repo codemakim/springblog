@@ -57,7 +57,7 @@ public class CommentService {
    */
   @Transactional(readOnly = true)
   public List<Comment> getCommentListByPost(Long postId) {
-    return commentRepository.findByPostIdAndDepthAndDisplayTrueOrderByIdAsc(postId, 1);
+    return commentRepository.findByPostIdAndDepthOrderByIdAsc(postId, 1);
   }
 
   /**
