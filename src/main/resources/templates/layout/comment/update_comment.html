@@ -1,0 +1,23 @@
+<th:block th:fragment="commentUpdate">
+  <div class="modal fade" id="modalUpdateComment">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal body -->
+        <div class="modal-body">
+          <input type="password" name="password" maxlength="8" id="passwordUpdateComment" class="form-control mb-2"
+            placeholder="댓글 수정을 위해 패스워드를 입력하세요.">
+          <textarea name="content" id="textareaUpdateComment" class="form-control mb-1" cols="30" rows="4"
+            th:text="${comment.content}"></textarea>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-comment-update" data-postid="${comment.postId}"
+            data-commentid="${comment.commentid}">Yes</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</th:block>

@@ -1,0 +1,22 @@
+<th:block th:fragment="commentWrite">
+  <div class="card mb-3">
+    <div class="card-body">
+      <form th:action="@{'/post/' + ${post.id} + '/comment'}" method="POST" name="commentWriteForm">
+        <input type="hidden" name="postId" th:value="${post.id}">
+        <input type="hidden" name="depth" value="1">
+        <input type="hidden" name="childCount" value="0">
+        <input type="hidden" name="display" value="true">
+        <div class="row mb-2">
+          <div class="col-md-6 mb-1">
+            <input type="text" name="name" class="form-control" placeholder="이름">
+          </div>
+          <div class="col-md-6 mb-1">
+            <input type="text" name="password" class="form-control" placeholder="패스워드">
+          </div>
+        </div>
+        <textarea name="content" class="form-control mb-1" cols="30" rows="4"></textarea>
+        <button class="btn btn-dark">등록</button>
+      </form>
+    </div>
+  </div>
+</th:block>

@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +54,13 @@ public class PostController {
    * @return
    */
   @GetMapping
-  public String list(@PageableDefault Pageable pageable, Model model) {
-    model.addAttribute("postList", postService.getPostPage(pageable));
+  public String list(@AuthenticationPrincipal AuthUser authUser, @PageableDefault Pageable pageable,
+      @RequestParam(defaultValue = "") String tag, Model model) {
+    Page<Post> postList = postService.getPostListByTagDesc(tag, pageable);
+
+    model.addAttribute("postList", postList);
+    model.addAttribute("selectTag", tag);
+
     return "post/list";
   }
 
@@ -179,6 +185,42 @@ public class PostController {
   }
 
   /**
+   * 포스트ID, 코멘트ID를 넘겨받아 해당하는 코멘트를 수정하기 위한 폼을 반환합니다.
+   * 
+   * @param postId
+   * @param commentId
+   * @param model
+   * @return
+   */
+  @GetMapping(value = "/{postId}/comment/{commentId}/update")
+  public String getUpdateCommentForm(@PathVariable(value = "postId") Long postId,
+      @PathVariable(value = "commentId") Long commentId, Model model) {
+    Comment comment = commentService.getComment(commentId);
+    logger.info("코멘트 : " + comment.toString());
+    model.addAttribute("comment", comment);
+    return "layout/comment/update_comment";
+  }
+
+  @PostMapping(value = "/{postId}/comment/{commentId}/update")
+  public ResponseEntity<?> updateComment(@PathVariable(value = "postId") Long postId,
+      @PathVariable(value = "commentId") Long commentId, Comment requestComment) {
+    logger.info("코멘트 투스트링 : " + requestComment);
+    try {
+      Comment comment = commentService.getComment(commentId);
+      if (requestComment.getPassword().equals(comment.getPassword())) {
+        comment.setContent(requestComment.getContent());
+        commentService.saveComment(comment);
+        return ResponseEntity.ok().build();
+      } else {
+        return ResponseEntity.badRequest().build();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  /**
    * 코멘트 ID와 비밀번호를 입력받습니다. 입력받은 ID의 코멘트 정보와 비밀번호가 일치하면, 코멘트를 삭제합니다.
    * 
    * @param postId
@@ -187,13 +229,12 @@ public class PostController {
    * @return
    */
   @ResponseBody
-  @GetMapping(value = "{postId}/comment/{commentId}/delete")
+  @PostMapping("/{postId}/comment/{commentId}/delete")
   public ResponseEntity<?> deleteComment(@PathVariable(value = "postId") Long postId,
-      @PathVariable(value = "commentId") Long commentId, @RequestParam(value = "pwd") String pwd) {
-
+      @PathVariable(value = "commentId") Long commentId, Comment requestComment) {
     try {
       Comment comment = commentService.getComment(commentId);
-      if (pwd == comment.getPassword()) {
+      if (requestComment.getPassword().equals(comment.getPassword())) {
         commentService.deleteComment(commentId);
         return ResponseEntity.ok().build();
       } else {
