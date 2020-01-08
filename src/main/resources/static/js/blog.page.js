@@ -8,35 +8,60 @@ var $Page = {
    * 이벤트를 바인딩하기 위한 함수입니다.
    */
   bindHandlers: function () {
+
+    /**
+     * 블로그 제목을 클릭했을 때 실행됩니다.
+     */
     $(document).on('click', '.text-blog-title', function (e) {
       location.href = '/';
     });
 
+    /**
+     * 포스트 삭제 버튼을 눌렀을 때 실행됩니다.
+     */
     $(document).on('click', '.btn-post-delete', function (e) {
       console.log($(this).attr('data-index'));
       $Page.deletePost($(this).attr('data-index'));
     });
 
+    /**
+     * 포스트 작성 페이지에서 '취소'버튼을 눌렀을 때 실행됩니다.
+     */
     $(document).on('click', '.btn-cancel-write', function (e) {
       window.history.back();
     });
 
+    /**
+     * 댓글 목록에서 수정 버튼 클릭 시 실행됩니다. 댓글 수정 모달을 띄웁니다.
+     */
     $(document).on('click', '.btn-modal-update-comment', function (e) {
       $Page.settingUpdateCommentForm($(this).data('postid'), $(this).data('commentid'));
     });
 
+    /**
+     * 댓글 수정 모달 닫기 버튼 클릭 시 실행됩니다.
+     */
     $(document).on('hide.bs.modal', '#modalUpdateComment', function (e) {
       $(this).remove();
     });
 
+    /**
+     * 댓글을 수정합니다.
+     */
     $(document).on('click', '.btn-comment-update', function (e) {
       $Page.updateComment();
     });
 
+    /**
+     * 댓글 목록에서 삭제 버튼 클릭 시 실행됩니다.
+     */
     $(document).on('click', '.btn-modal-delete-comment', function (e) {
       $Page.settingDeleteCommentForm($(this).data('postid'), $(this).data('commentid'));
     });
 
+    /**
+     * 댓글을 삭제합니다.
+     */
     $(document).on('click', '.btn-comment-delete', function (e) {
       $Page.deleteComment();
     });
@@ -106,8 +131,6 @@ var $Page = {
     $('<input/>').attr({ type: 'hidden', id: 'commentIdUpdateForm', name: 'id', value: commentId, }).appendTo($form);
     $('<input/>').attr({ type: 'hidden', name: 'password' }).appendTo($form);
     $('<input/>').attr({ type: 'hidden', name: 'content' }).appendTo($form);
-    //비밀번호 창 초기화
-    //수정 텍스트에리어의 내용을 해당하는 댓글 코멘트 내용을 가져와서 채워 넣기
   },
 
   /**
@@ -247,6 +270,5 @@ var $Page = {
     });
     formData.delete('file');
   },
-
 
 };

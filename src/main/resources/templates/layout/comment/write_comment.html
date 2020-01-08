@@ -1,4 +1,4 @@
-<th:block th:fragment="commentWrite">
+<th:block th:fragment="writeComment">
   <div class="card mb-3">
     <div class="card-body">
       <form th:action="@{'/post/' + ${post.id} + '/comment'}" method="POST" name="commentWriteForm">
@@ -11,7 +11,7 @@
             <input type="text" name="name" class="form-control" placeholder="이름">
           </div>
           <div class="col-md-6 mb-1">
-            <input type="text" name="password" class="form-control" placeholder="패스워드">
+            <input type="text" name="password" class="form-control" maxlength="8" placeholder="패스워드">
           </div>
         </div>
         <textarea name="content" class="form-control mb-1" cols="30" rows="4"></textarea>
